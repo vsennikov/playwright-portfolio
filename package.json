@@ -1,0 +1,22 @@
+{
+  "name": "playwright-portfolio",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vsennikov/playwright-portfolio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vsennikov/playwright-portfolio/issues"
+  },
+  "homepage": "https://github.com/vsennikov/playwright-portfolio#readme",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.10.1"
+  }
+}
