@@ -31,15 +31,15 @@ export class LoginPage extends BasePage {
   }
 
   async clickShowPassword() {
-    await this.showPasswordButton.click();
+    await this.showPasswordButton.click()
   }
 
   async clickRegister() {
-    await this.registerLink.click();
+    await this.registerLink.click()
   }
 
   async clickForgotPassword() {
-    await this.forgotPasswordLink.click();
+    await this.forgotPasswordLink.click()
   }
 
   async getErrorMessageText() {

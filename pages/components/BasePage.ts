@@ -6,7 +6,7 @@ export class BasePage {
 
   constructor(page: Page) {
     this.page = page
-    this.headerLogo = page.locator('.navbar-brand');
+    this.headerLogo = page.locator('.navbar-brand')
   }
 
   async open(path: string = '/') {
