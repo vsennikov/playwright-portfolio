@@ -25,6 +25,7 @@ export class RegistrationPage extends BasePage {
   readonly postalCodeError: Locator
   readonly emailError: Locator
   readonly passwordError: Locator
+  readonly registerError: Locator
 
   constructor(page: Page) {
     super(page)
@@ -51,6 +52,7 @@ export class RegistrationPage extends BasePage {
     this.postalCodeError = page.locator('[data-test="postal_code-error"]')
     this.emailError = page.locator('[data-test="email-error"]')
     this.passwordError = page.locator('[data-test="password-error"]')
+    this.registerError = page.locator('[data-test="register-error"]')
   }
 
   async openRegister() {
