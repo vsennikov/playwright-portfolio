@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { LoginPage } from '../pages/LoginPage'
+import { loadCredentials } from './utils/credentials'
 
 test.describe('Login Functionality', () => {
 
@@ -11,7 +12,10 @@ test.describe('Login Functionality', () => {
   })
   
   test('should login successfully with valid credentials', async ({ page }) => {
-    await loginPage.login('customer@practicesoftwaretesting.com', 'welcome01')
+    const saved = loadCredentials()
+    const email = saved?.email ?? 'customer@practicesoftwaretesting.com'
+    const password = saved?.password ?? 'welcome01'
+    await loginPage.login(email, password)
    
 	await expect(page).toHaveURL(/account/)
     await expect(page.locator('h1')).toContainText('My account')

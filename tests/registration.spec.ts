@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test'
 import { RegistrationPage } from '../pages/RegistrationPage'
+import { saveCredentials } from './utils/credentials'
 
 test.describe('Registration Page', () => {
   let registrationPage: RegistrationPage
@@ -28,6 +29,7 @@ test.describe('Registration Page', () => {
 
   test('should register successfully with valid data (happy path)', async ({ page }) => {
     const uniqueEmail = `playwright_${Date.now()}@example.com`
+    const password = 'Random_password_1!'
 
     await registrationPage.fillBasicInfo({
       firstName: 'John',
@@ -40,13 +42,16 @@ test.describe('Registration Page', () => {
       country: 'Austria',
       phone: '1234567890',
       email: uniqueEmail,
-      password: 'Random_password_1!',
+      password,
     })
 
     await registrationPage.submit()
 
     // Site behavior: may redirect to account or login. Accept either to avoid brittleness.
     await expect(page).toHaveURL(/(account|auth\/login)/)
+
+    // Persist credentials for subsequent tests (e.g., login)
+    saveCredentials({ email: uniqueEmail, password })
   })
 })
 
