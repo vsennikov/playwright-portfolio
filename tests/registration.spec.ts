@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test'
 import { RegistrationPage } from '../pages/RegistrationPage'
 import { saveCredentials } from './utils/credentials'
+import { generateUniqueEmail, generateValidPassword } from './apiUtils/utils'
+import { faker } from '@faker-js/faker'
 
 test.describe('Registration - based on RegistrationTestCases.md', () => {
   let registrationPage: RegistrationPage
@@ -13,17 +15,17 @@ test.describe('Registration - based on RegistrationTestCases.md', () => {
 
   async function fillWithBaselineValidData(page: RegistrationPage, overrides?: Partial<Parameters<RegistrationPage['fillBasicInfo']>[0]>) {
     const base = {
-      firstName: 'John',
-      lastName: 'Doe',
-      dob: '1990-01-01',
-      street: '123 Main St',
-      postalCode: '12345',
-      city: 'Springfield',
-      state: 'IL',
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
+      dob: faker.date.birthdate({ min: 18, max: 75, mode: 'age' }).toISOString().split('T')[0],
+      street: faker.location.streetAddress(),
+      postalCode: faker.location.zipCode(),
+      city: faker.location.city(),
+      state: faker.location.state({ abbreviated: true }),
       country: 'Austria',
-      phone: '1234567890',
-      email: `playwright_${Date.now()}@example.com`,
-      password: 'ValidPass123!',
+      phone: faker.phone.number().replace(/[^0-9]/g, '').slice(0, 10),
+      email: generateUniqueEmail(),
+      password: generateValidPassword(),
     }
     await page.fillBasicInfo({ ...base, ...(overrides || {}) })
     return { ...base, ...(overrides || {}) }
@@ -31,8 +33,8 @@ test.describe('Registration - based on RegistrationTestCases.md', () => {
 
   // TC-REG-001: Successful registration with all valid data
   test('TC-REG-001 - successful registration with all valid data', async ({ page }) => {
-    const email = `playwright_${Date.now()}@example.com`
-    const password = 'ValidPass123!'
+    const email = generateUniqueEmail()
+    const password = generateValidPassword()
     await fillWithBaselineValidData(registrationPage, { email, password })
     await registrationPage.submit()
     await expect(page).toHaveURL(/(account|auth\/login)/)
@@ -51,7 +53,7 @@ test.describe('Registration - based on RegistrationTestCases.md', () => {
   // TC-REG-003: Missing mandatory field (Email)
   test('TC-REG-003 - missing email shows validation error', async () => {
     await fillWithBaselineValidData(registrationPage)
-    await registrationPage.emailInput.fill('') // clear email
+    await registrationPage.emailInput.fill('')
     await registrationPage.submit()
     await expect(registrationPage.emailError).toBeVisible()
   })
@@ -79,8 +81,7 @@ test.describe('Registration - based on RegistrationTestCases.md', () => {
 
   // TC-REG-007: Valid password at minimum length (Boundary) - success
   test('TC-REG-007 - successful registration with minimum valid password length', async ({ page }) => {
-    const email = `playwright_minlen_${Date.now()}@example.com`
-    // Exactly 8 chars, containing upper, lower, number, special
+    const email = generateUniqueEmail()
     const password = 'Vali953!'
     await fillWithBaselineValidData(registrationPage, { email, password })
     await registrationPage.submit()
@@ -123,3 +124,4 @@ test.describe('Registration - based on RegistrationTestCases.md', () => {
     await expect(registrationPage.registerError).toHaveText(/A customer with this email address already exists\./)
   })
 })
+
