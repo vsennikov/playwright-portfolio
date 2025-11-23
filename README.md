@@ -133,7 +133,11 @@ npm run allure:open
 npm run allure:serve
 ```
 
-The Allure reports are also automatically generated and deployed to GitHub Pages via CI/CD pipeline. Check the latest test results in the repository's GitHub Pages.
+The Allure reports are also automatically generated and deployed via CI/CD pipeline. 
+
+**📊 View Latest Test Reports**: [http://vsennikov.me/playwright-portfolio/](http://vsennikov.me/playwright-portfolio/)
+
+Reports are automatically updated after each test run and include detailed test history, execution statistics, and failure analysis.
 
 ## 🎯 Test Coverage
 
@@ -197,7 +201,7 @@ The project includes a GitHub Actions workflow (`.github/workflows/playwright.ym
 1. Runs tests on push/PR to `main` branch
 2. Executes tests on Ubuntu latest with Node.js LTS
 3. Generates Allure reports
-4. Deploys test reports to GitHub Pages
+4. Deploys test reports to [http://vsennikov.me/playwright-portfolio/](http://vsennikov.me/playwright-portfolio/)
 5. Maintains report history (last 20 reports)
 
 ## 📚 Test Documentation
