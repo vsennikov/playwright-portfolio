@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test'
 import { LoginPage } from '../pages/LoginPage'
 import { loadCredentials } from './utils/credentials'
+import { log } from 'console'
 
 test.describe('Login Page - based on LoginTestCases.md', () => {
   let loginPage: LoginPage
@@ -43,8 +44,7 @@ test.describe('Login Page - based on LoginTestCases.md', () => {
     await loginPage.login(email, 'WrongPass123!')
     
     await expect(loginPage.loginError).toBeVisible()
-    const errorText = await loginPage.getLoginErrorText()
-    expect(errorText).toContain('Invalid email or password')
+	await expect(loginPage.loginError).toHaveText('Invalid email or password')
   })
 
   // TC-LOG-004: Login with non-registered email
@@ -52,8 +52,7 @@ test.describe('Login Page - based on LoginTestCases.md', () => {
     await loginPage.login('random.user.999@test.com', 'AnyPassword123!')
     
     await expect(loginPage.loginError).toBeVisible()
-    const errorText = await loginPage.getLoginErrorText()
-    expect(errorText).toContain('Invalid email or password')
+	await expect(loginPage.loginError).toHaveText('Invalid email or password')
   })
 
   // TC-LOG-005: Login with empty fields
@@ -63,10 +62,8 @@ test.describe('Login Page - based on LoginTestCases.md', () => {
     await expect(loginPage.emailError).toBeVisible()
     await expect(loginPage.passwordError).toBeVisible()
     
-    const emailError = await loginPage.getEmailErrorText()
-    const passwordError = await loginPage.getPasswordErrorText()
-    expect(emailError).toContain('Email is required')
-    expect(passwordError).toContain('Password is required')
+	await expect(loginPage.emailError).toHaveText('Email is required')
+	await expect(loginPage.passwordError).toHaveText('Password is required')
   })
 
   // TC-LOG-006: Login with invalid email format
@@ -76,8 +73,7 @@ test.describe('Login Page - based on LoginTestCases.md', () => {
     await loginPage.loginButton.click()
     
     await expect(loginPage.emailError).toBeVisible()
-    const errorText = await loginPage.getEmailErrorText()
-    expect(errorText).toMatch(/email.*invalid|invalid.*email/i)
+	await expect(loginPage.emailError).toHaveText('Email is required')
   })
 
   // TC-LOG-007: Toggle password visibility ("Eye" icon)
@@ -85,10 +81,10 @@ test.describe('Login Page - based on LoginTestCases.md', () => {
     await loginPage.passwordInput.fill('SecretPass123')
     
     await expect(loginPage.passwordInput).toHaveAttribute('type', 'password')
-        await loginPage.clickShowPassword()
-
+    await loginPage.clickShowPassword()
     await expect(loginPage.passwordInput).toHaveAttribute('type', 'text')
-        await loginPage.clickShowPassword()
+    
+    await loginPage.clickShowPassword()
     await expect(loginPage.passwordInput).toHaveAttribute('type', 'password')
   })
 
