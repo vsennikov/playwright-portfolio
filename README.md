@@ -2,6 +2,21 @@
 
 Portfolio project built with Playwright, demonstrating automated testing capabilities for web applications and REST APIs. This project showcases UI testing, API testing and best practices in test automation using TypeScript and the Page Object Model pattern.
 
+
+## 📋 Table of Contents
+
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Installation](#-installation)
+- [Project Structure](#-project-structure)
+- [Running Tests](#-running-tests)
+- [Test Reports](#-test-reports)
+- [Test Coverage](#-test-coverage)
+- [Configuration](#-configuration)
+- [CI/CD Pipeline](#-ci-cd-pipeline)
+- [Test Documentation](#-test-documentation)
+- [Page Object Model (POM)](#-page-object-model-pom)
+
 ## 🚀 Features
 
 - **UI Testing**: Comprehensive test coverage for login and registration flows
@@ -38,11 +53,6 @@ Portfolio project built with Playwright, demonstrating automated testing capabil
 3. **Install Playwright browsers**:
    ```bash
    npx playwright install
-   ```
-
-   Or install with system dependencies:
-   ```bash
-   npx playwright install --with-deps
    ```
 
 ## 🏗️ Project Structure
