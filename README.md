@@ -8,10 +8,12 @@ Portfolio project built with Playwright, demonstrating automated testing capabil
 - **API Testing**: REST API testing with user registration, authentication, product search and cart management
 - **Page Object Model**: Clean and maintainable test structure using POM pattern
 - **Multiple Browsers**: Support for Chromium, Firefox, WebKit, and mobile browsers (Chrome Mobile, Safari Mobile)
+- **Centralized Routing**: Single source of truth for application routes using `Routes` enum
+- **Dynamic Test Data**: Per-test isolation with dynamic user generation 
 - **Test Reporting**: Integrated Allure reporting for detailed test results and history
 - **CI/CD**: GitHub Actions workflow for automated test execution
 - **TypeScript**: Type-safe test code with full TypeScript support
-- **Data Generation**: Uses Faker.js for generating test data
+- **Data Generation**: Uses Faker.js and dynamic user creation for robust tests
 
 ## 🛠️ Tech Stack
 
@@ -54,7 +56,8 @@ playwright-portfolio/
 │   ├── components/
 │   │   └── BasePage.ts             # Base page class
 │   ├── LoginPage.ts                # Login page object
-│   └── RegistrationPage.ts         # Registration page object
+│   ├── RegistrationPage.ts         # Registration page object
+│   └── Routes.ts                   # Centralized route definitions
 ├── tests/
 │   ├── api.spec.ts                 # API test suite
 │   ├── login.spec.ts               # Login page tests
@@ -63,7 +66,7 @@ playwright-portfolio/
 │   │   ├── models.ts               # API request/response types
 │   │   └── utils.ts                # API utility functions
 │   └── utils/
-│       └── credentials.ts          # Credential management
+│       └── (Removed)               # Credentials moved to dynamic generation
 ├── test-documentation/
 │   ├── APITestCases.md             # API test case documentation
 │   ├── LoginTestCases.md           # Login test case documentation
