@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test'
 import { RegistrationPage } from '../pages/RegistrationPage'
-import { saveCredentials } from './utils/credentials'
 import { generateUniqueEmail, generateValidPassword } from './apiUtils/utils'
 import { faker } from '@faker-js/faker'
 
@@ -38,7 +37,6 @@ test.describe('Registration - based on RegistrationTestCases.md', () => {
 		await fillWithBaselineValidData(registrationPage, { email, password })
 		await registrationPage.submit()
 		await expect(page).toHaveURL(/(account|auth\/login)/)
-		saveCredentials({ email, password })
 	})
 
 	// TC-REG-002: Attempt registration with all empty fields

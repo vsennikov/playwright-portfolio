@@ -1,10 +1,24 @@
-import { test, expect } from '@playwright/test'
+import { test, expect, APIRequestContext } from '@playwright/test'
 import { LoginPage } from '../pages/LoginPage'
-import { loadCredentials } from './utils/credentials'
-import { log } from 'console'
+import { API_BASE_URL } from './apiUtils/utils'
+import { createTestUser, TestUser } from './apiUtils/userActions'
 
 test.describe('Login Page - based on LoginTestCases.md', () => {
 	let loginPage: LoginPage
+	let apiContext: APIRequestContext
+	let testUser: TestUser
+
+	test.beforeAll(async ({ playwright }) => {
+		apiContext = await playwright.request.newContext({
+			baseURL: API_BASE_URL,
+		})
+
+		testUser = await createTestUser(apiContext)
+	})
+
+	test.afterAll(async () => {
+		await apiContext.dispose()
+	})
 
 	test.beforeEach(async ({ page }) => {
 		loginPage = new LoginPage(page)
@@ -13,11 +27,7 @@ test.describe('Login Page - based on LoginTestCases.md', () => {
 
 	// TC-LOG-001: Successful login with valid credentials
 	test('TC-LOG-001 - successful login with valid credentials', async ({ page }) => {
-		const saved = loadCredentials()
-		const email = saved?.email ?? 'customer@practicesoftwaretesting.com'
-		const password = saved?.password ?? 'welcome01'
-
-		await loginPage.login(email, password)
+		await loginPage.login(testUser.email, testUser.password)
 
 		await expect(page).toHaveURL(/account/)
 		await expect(page.locator('h1')).toContainText('My account')
@@ -25,12 +35,9 @@ test.describe('Login Page - based on LoginTestCases.md', () => {
 
 	// TC-LOG-002: Login with email case insensitivity
 	test('TC-LOG-002 - login with email case insensitivity', async ({ page }) => {
-		const saved = loadCredentials()
-		const email = saved?.email ?? 'customer@practicesoftwaretesting.com'
-		const password = saved?.password ?? 'welcome01'
-		const uppercaseEmail = email.toUpperCase()
+		const uppercaseEmail = testUser.email.toUpperCase()
 
-		await loginPage.login(uppercaseEmail, password)
+		await loginPage.login(uppercaseEmail, testUser.password)
 
 		await expect(page).toHaveURL(/account/)
 		await expect(page.locator('h1')).toContainText('My account')
@@ -38,10 +45,7 @@ test.describe('Login Page - based on LoginTestCases.md', () => {
 
 	// TC-LOG-003: Login with invalid password
 	test('TC-LOG-003 - login with invalid password shows error', async () => {
-		const saved = loadCredentials()
-		const email = saved?.email ?? 'customer@practicesoftwaretesting.com'
-
-		await loginPage.login(email, 'WrongPass123!')
+		await loginPage.login(testUser.email, 'WrongPass123!')
 
 		await expect(loginPage.loginError).toBeVisible()
 		await expect(loginPage.loginError).toHaveText('Invalid email or password')
